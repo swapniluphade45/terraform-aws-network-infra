@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc" {
 # Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
-  tags = { Name = "igw-${var.environment}" }
+  tags   = { Name = "igw-${var.environment}" }
 }
 
 # Public Subnet
@@ -18,7 +18,7 @@ resource "aws_subnet" "public" {
   cidr_block              = var.public_subnet_cidr
   map_public_ip_on_launch = true
   availability_zone       = var.az_public
-  tags = { Name = "public-subnet-${var.environment}" }
+  tags                    = { Name = "public-subnet-${var.environment}" }
 }
 
 # Private Subnet
@@ -26,7 +26,7 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.private_subnet_cidr
   availability_zone = var.az_private
-  tags = { Name = "private-subnet-${var.environment}" }
+  tags              = { Name = "private-subnet-${var.environment}" }
 }
 
 # NAT Gateway
@@ -37,7 +37,7 @@ resource "aws_eip" "nat_eip" {
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip.id
   subnet_id     = aws_subnet.public.id
-  tags = { Name = "nat-${var.environment}" }
+  tags          = { Name = "nat-${var.environment}" }
 }
 
 # Public Route Table
@@ -112,7 +112,7 @@ resource "aws_instance" "public_ec2" {
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.public_sg.id]
   associate_public_ip_address = true
-  tags = { Name = "public-ec2-${var.environment}" }
+  tags                        = { Name = "public-ec2-${var.environment}" }
 }
 
 resource "aws_instance" "private_ec2" {
@@ -120,5 +120,5 @@ resource "aws_instance" "private_ec2" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.private.id
   vpc_security_group_ids = [aws_security_group.private_sg.id]
-  tags = { Name = "private-ec2-${var.environment}" }
+  tags                   = { Name = "private-ec2-${var.environment}" }
 }

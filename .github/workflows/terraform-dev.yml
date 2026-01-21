@@ -2,16 +2,24 @@ name: Terraform Dev CI/CD
 
 on:
   push:
-    branches:
-      - dev
     paths:
       - "dev-module/**"
-
   pull_request:
     branches:
       - dev
     paths:
       - "dev-module/**"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose Terraform action'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
 
 jobs:
   terraform:
@@ -29,7 +37,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.6.6
+          terraform_version: 1.14.3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -37,6 +45,9 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Terraform Version
+        run: terraform -v
 
       - name: Terraform Init
         run: terraform init
@@ -45,7 +56,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/') || github.event.inputs.action == 'plan'
+        run: terraform plan -var-file=dev.tfvars
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev' || github.event.inputs.action == 'apply'
+        run: terraform apply -var-file=dev.tfvars -auto-approve
+
+      - name: Terraform Destroy
+        if: github.event.inputs.action == 'destroy'
+        run: terraform destroy -var-file=dev.tfvars -auto-approve
