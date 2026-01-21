@@ -1,5 +1,5 @@
 module "network" {
-  source = "../terraform-module"
+  source = "../../modules"
 
   environment         = var.environment
   vpc_cidr            = var.vpc_cidr
