@@ -5,7 +5,7 @@
 .terraform.lock.hcl
 
 # Terraform variable files
-*.tfvars
+# *.tfvars
 
 # Linux/Editor junk
 *~
