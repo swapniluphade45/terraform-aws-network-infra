@@ -7,7 +7,7 @@ resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr[local.env]
 
   tags = {
-    Name = "vpc-${local.env}"
+    Name        = "vpc-${local.env}"
     Environment = local.env
   }
 }
@@ -26,7 +26,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.public_subnet_cidr[local.env]
   map_public_ip_on_launch = true
-  availability_zone      = "ap-south-1a"
+  availability_zone       = "ap-south-1a"
 
   tags = {
     Name = "public-subnet-${local.env}"
@@ -35,8 +35,8 @@ resource "aws_subnet" "public" {
 
 # Private Subnet
 resource "aws_subnet" "private" {
-  vpc_id             = aws_vpc.vpc.id
-  cidr_block         = var.private_subnet_cidr[local.env]
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.private_subnet_cidr[local.env]
   availability_zone = "ap-south-1b"
 
   tags = {
@@ -155,7 +155,7 @@ resource "aws_security_group" "public_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -192,9 +192,9 @@ resource "aws_security_group" "private_sg" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
     security_groups = [aws_security_group.public_sg.id]
   }
 
