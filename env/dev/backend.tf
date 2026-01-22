@@ -1,13 +1,9 @@
 terraform {
-
   backend "s3" {
-
-    bucket = "terraform-statefile-swapnil45"
-    key = "dev/terraform.tfstate"
-    region = "ap-south-1"
-    encrypt = true
-    use_lockfile = true
-
+    bucket         = "terraform-statefile-swapnil45"
+    key            = "dev/terraform.tfstate"
+    region         = "ap-south-1"
+    encrypt        = true
+    use_lockfile   = true
   }
-
 }
