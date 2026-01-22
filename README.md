@@ -35,17 +35,29 @@ The project is structured to support **modular and environment-specific deployme
 ## Project Structure
 
 terraform-aws-network-infra/
-├─ modules/
-│ ├─ main.tf
-│ ├─ variables.tf
-│ └─ outputs.tf
-├─ env/
-│ ├─ dev/
-│ ├─ stage/
-│ └─ prod/
-├─ .github/
-│ └─ workflows/
-└─ README.md
+│
+├── .github/
+│   └── workflows/
+│       └── terraform-dev.yml
+│
+├── env/
+│   ├── dev/
+│   │   ├── backend.tf
+│   │   ├── provider.tf
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── dev.tfvars
+│   ├── stage/
+│   └── prod/
+│
+├── modules/
+│   ├── main.tf
+│   ├── variables.tf
+│   └── outputs.tf
+│
+├── README.md
+└── terraform-workspace/
+
 
 
 ---
